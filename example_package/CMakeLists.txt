@@ -37,7 +37,10 @@ file(GLOB_RECURSE CPP_SOURCES RELATIVE ${SRC_DIR} ${SRC_DIR}/*.cpp)
 foreach(CPP_SOURCE ${CPP_SOURCES})
   get_filename_component(CPP_NAME ${CPP_SOURCE} NAME_WE)
   add_executable(${CPP_NAME} ${SRC_DIR}/${CPP_SOURCE})
-  target_link_libraries(${CPP_NAME} rclcpp)  # Link against rclcpp
+  
+  # Properly include and link rclcpp
+  ament_target_dependencies(${CPP_NAME} rclcpp)
+  
   install(TARGETS ${CPP_NAME}
     DESTINATION lib/${PROJECT_NAME})
 endforeach()
