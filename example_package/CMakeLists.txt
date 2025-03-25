@@ -5,18 +5,27 @@ find_package(ament_cmake REQUIRED)
 find_package(rclpy REQUIRED)  # For Python nodes
 find_package(rclcpp REQUIRED) # For C++ nodes
 
-# Define the directory where Python scripts (executables) are stored
-set(SCRIPTS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/scripts")
+# Auto-detect and install Python executables from both scripts/ and package directories
+file(GLOB PYTHON_SCRIPTS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/scripts/*.py")
+file(GLOB PYTHON_PACKAGE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}/*.py")
 
-# Function to find all Python scripts in the "scripts" directory
-file(GLOB_RECURSE PYTHON_SCRIPTS RELATIVE ${SCRIPTS_DIR} ${SCRIPTS_DIR}/*.py)
+# Create a list of all Python files from both locations
+set(ALL_PYTHON_FILES ${PYTHON_SCRIPTS_DIR} ${PYTHON_PACKAGE_DIR})
 
-# Iterate over each Python script and install them as executables
-foreach(PYTHON_SCRIPT ${PYTHON_SCRIPTS})
-  get_filename_component(SCRIPT_NAME ${PYTHON_SCRIPT} NAME_WE)
-  install(PROGRAMS ${SCRIPTS_DIR}/${PYTHON_SCRIPT}
-    DESTINATION lib/${PROJECT_NAME})
+# Iterate over each Python file and install them as executables
+foreach(python_file ${ALL_PYTHON_FILES})
+    get_filename_component(script_name ${python_file} NAME_WE)
+    install(PROGRAMS
+        ${python_file}
+        DESTINATION lib/${PROJECT_NAME}
+        RENAME ${script_name}
+    )
 endforeach()
+
+# If using Python package organization, install the package
+if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}")
+    ament_python_install_package(${PROJECT_NAME})
+endif()
 
 # Define the directory where C++ source files are stored
 set(SRC_DIR "${CMAKE_CURRENT_SOURCE_DIR}/src")

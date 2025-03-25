@@ -10,7 +10,7 @@ This approach allows you to focus on building your ROS2 applications without wor
 
 ## Features
 
-- Automatically detects and installs **Python executables** from the `scripts/` directory.
+- Automatically detects and installs **Python executables** from both the `scripts/` directory and Python package-style organization.
 - Automatically builds and installs **C++ executables** from the `src/` directory.
 - Handles all additional resources like **launch files**, **URDFs**, **meshes**, and **config files**.
 - Reusable across multiple ROS2 packages with minimal changes.
@@ -32,7 +32,8 @@ Place this `CMakeLists.txt` in the root of your ROS2 package. Ensure your packag
 your_package/
 ├── CMakeLists.txt       # The reusable CMakeLists.txt from this repository
 ├── package.xml          # Your package metadata
-├── scripts/             # Python executables (nodes)
+├── scripts/             # Python executables (traditional organization)
+├── your_package/        # Python package (alternative organization)
 ├── src/                 # C++ source files (nodes)
 ├── launch/              # Optional launch files
 ├── urdf/                # Optional URDF files
