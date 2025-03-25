@@ -14,11 +14,9 @@ set(ALL_PYTHON_FILES ${PYTHON_SCRIPTS_DIR} ${PYTHON_PACKAGE_DIR})
 
 # Iterate over each Python file and install them as executables
 foreach(python_file ${ALL_PYTHON_FILES})
-    get_filename_component(script_name ${python_file} NAME_WE)
     install(PROGRAMS
         ${python_file}
         DESTINATION lib/${PROJECT_NAME}
-        RENAME ${script_name}
     )
 endforeach()
 
